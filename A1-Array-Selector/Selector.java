@@ -76,22 +76,25 @@ public final class Selector {
         Arrays.sort(copyRay);
 
         int z = 1;
+        int i = 0;
 
-        for (int i = 0; i < copyRay.length; i++) {
-            if (copyRay[i] != copyRay[i+1]) {
+        if (k == 1) {
+            return copyRay[0];
+        }
+
+        while (i < copyRay.length - 1 && z < k) {
+            if (copyRay[i] != copyRay[++i]) {
                 z++;
-            }
-
-            if (z == k) {
-                return copyRay[i];
             }
         }
 
         if (z != k) {
             throw new IllegalArgumentException(k + "th min does not exist.");
         }
-        return -1;
+
+        return copyRay[i];
     }
+
 
 
     /**
@@ -103,29 +106,33 @@ public final class Selector {
      * changed by this method.
      */
     public static int kmax(int[] a, int k) {
-        if (a == null || a.length == 0) {
-            throw new IllegalArgumentException("Array must have elements.");
+        if (a == null || a.length == 0 || k <= 0 || k > a.length) {
+            throw new IllegalArgumentException("Invalid input.");
         }
 
         int[] copyRay = Arrays.copyOf(a, a.length);
         Arrays.sort(copyRay);
 
-        int z = 0;
+        int z = 1;
+        int i = copyRay.length - 1;
 
-        for (int i = copyRay.length - 1; i >= 0; i--) {
-            if (copyRay[i] != copyRay[i--]) {
+        if (k == 1) {
+            return copyRay[i];
+        }
+
+        while (i > 0) {
+            if (copyRay[i] != copyRay[i - 1]) {
                 z++;
+                if (z == k) {
+                    return copyRay[i - 1];
+                }
             }
-            if (z == k) {
-                return copyRay[i];
-            }
+            i--;
         }
 
-        if (z != k) {
-            throw new IllegalArgumentException(k + "th min does not exist.");
-        }
-        return -1;
+        throw new IllegalArgumentException(k + "th max does not exist.");
     }
+
 
 
     /**
